@@ -9,6 +9,7 @@
     var websocket;
     var tree;
     var activity;
+    var colour;
     var output;
     var start;
     var manual;
@@ -17,6 +18,7 @@
     function init() {
       tree = document.getElementById("tree");
       activity = document.getElementById("activity");
+      colour = document.getElementById("colour");
       output = document.getElementById("output");
       start = document.getElementById("start");
       manual = document.getElementById("manual");
@@ -62,6 +64,8 @@
         if (activity.childElementCount > 10) {
           activity.removeChild(activity.lastChild);
         }
+      } else if (message.startsWith("COLOUR:")) {
+        colour.innerHTML = message.replace("COLOUR:","");
       } else {
         writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data + '</span>');
       }
@@ -153,6 +157,7 @@
     <input id="start" type="button" value="Start" />
     <input id="manual" type="button" value="Manual" />
     <input id="followline" type="button" value="Follow line" />
+    <div id="colour"></div>
   </div>
 
   <div>
