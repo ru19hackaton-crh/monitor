@@ -10,6 +10,7 @@
     var tree;
     var activity;
     var output;
+    var start;
     var manual;
     var followline;
 
@@ -17,8 +18,10 @@
       tree = document.getElementById("tree");
       activity = document.getElementById("activity");
       output = document.getElementById("output");
+      start = document.getElementById("start");
       manual = document.getElementById("manual");
       followline = document.getElementById("followline");
+      configureStart();
       configureManual();
       configureFollowline();
       initWebSocket();
@@ -75,6 +78,11 @@
       output.appendChild(pre);
     }
 
+    function configureStart() {
+      start.addEventListener("click", function(e) {
+        websocket.send("start");
+      });
+    }
     function configureManual() {
       manual.addEventListener("click", activateManual);
     }
@@ -142,6 +150,7 @@
 
   <div>
     <h2>Test commands</h2>
+    <input id="start" type="button" value="Start" />
     <input id="manual" type="button" value="Manual" />
     <input id="followline" type="button" value="Follow line" />
   </div>
