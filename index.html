@@ -9,8 +9,12 @@
     var websocket;
     var output;
     var manual;
+    var tree;
+    var activity;
 
     function init() {
+      tree = document.getElementById("tree");
+      activity = document.getElementById("activity");
       output = document.getElementById("output");
       manual = document.getElementById("manual");
       configureManual();
@@ -43,7 +47,14 @@
     }
 
     function onMessage(evt) {
-      writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data + '</span>');
+      var message = evt.data;
+      if (message.startsWith("TREE:")) {
+        tree.innerHTML = message.replace("TREE:","");
+      } else if (message.startsWith("ACTIVITY:")) {
+        activity.innerHTML = message.replace("ACTIVITY:","");
+      } else {
+        writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data + '</span>');
+      }
       //websocket.close();
     }
 
@@ -121,11 +132,13 @@
 </head>
 
 <body>
-  <h2>WebSocket Test</h2>
-
-  <div id="output"></div>
+  <h1>Crazy Robothackers Monitoring</h1>
 
   <input id="manual" type="button" value="Manual" />
+
+  <div id="tree"></div>
+  <div id="activity"></div>
+  <div id="output"></div>
 </body>
 
 </html>
