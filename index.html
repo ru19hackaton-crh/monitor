@@ -3,14 +3,14 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>WebSocket Test</title>
+  <title>Crazy Robothackers Monitoring</title>
   <script language="javascript" type="text/javascript">
     var wsUri = "ws://localhost:9000/monitor";
     var websocket;
-    var output;
-    var manual;
     var tree;
     var activity;
+    var output;
+    var manual;
 
     function init() {
       tree = document.getElementById("tree");
@@ -18,10 +18,10 @@
       output = document.getElementById("output");
       manual = document.getElementById("manual");
       configureManual();
-      testWebSocket();
+      initWebSocket();
     }
 
-    function testWebSocket() {
+    function initWebSocket() {
       websocket = new WebSocket(wsUri);
       websocket.onopen = function(evt) {
         onOpen(evt)
@@ -39,7 +39,6 @@
 
     function onOpen(evt) {
       writeToScreen("CONNECTED");
-      //doSend("WebSocket rocks");
     }
 
     function onClose(evt) {
@@ -51,20 +50,19 @@
       if (message.startsWith("TREE:")) {
         tree.innerHTML = message.replace("TREE:","");
       } else if (message.startsWith("ACTIVITY:")) {
-        activity.innerHTML = message.replace("ACTIVITY:","");
+        var p = document.createElement("p");
+        p.innerHTML = message.replace("ACTIVITY:","");
+        activity.prepend(p);
+        if (activity.childElementCount > 10) {
+          activity.removeChild(activity.lastChild);
+        }
       } else {
         writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data + '</span>');
       }
-      //websocket.close();
     }
 
     function onError(evt) {
       writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
-    }
-
-    function doSend(message) {
-      writeToScreen("SENT: " + message);
-      websocket.send(message);
     }
 
     function writeToScreen(message) {
@@ -134,7 +132,10 @@
 <body>
   <h1>Crazy Robothackers Monitoring</h1>
 
-  <input id="manual" type="button" value="Manual" />
+  <div>
+    <h2>Test commands</h2>
+    <input id="manual" type="button" value="Manual" />
+  </div>
 
   <div id="tree"></div>
   <div id="activity"></div>
