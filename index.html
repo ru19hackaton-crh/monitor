@@ -11,13 +11,16 @@
     var activity;
     var output;
     var manual;
+    var followline;
 
     function init() {
       tree = document.getElementById("tree");
       activity = document.getElementById("activity");
       output = document.getElementById("output");
       manual = document.getElementById("manual");
+      followline = document.getElementById("followline");
       configureManual();
+      configureFollowline();
       initWebSocket();
     }
 
@@ -73,7 +76,12 @@
     }
 
     function configureManual() {
-      manual.addEventListener("click", activateManual)
+      manual.addEventListener("click", activateManual);
+    }
+    function configureFollowline() {
+      followline.addEventListener("click", function(e) {
+        websocket.send("followline");
+      });
     }
 
     function activateManual() {
@@ -135,10 +143,15 @@
   <div>
     <h2>Test commands</h2>
     <input id="manual" type="button" value="Manual" />
+    <input id="followline" type="button" value="Follow line" />
   </div>
 
-  <div id="tree"></div>
-  <div id="activity"></div>
+  <div>
+    <h2>Behaviour tree</h2>
+    <div id="tree"></div>
+    <h2>Blackboard Activity</h2>
+    <div id="activity"></div>
+  </div>
   <div id="output"></div>
 </body>
 
